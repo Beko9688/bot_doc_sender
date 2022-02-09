@@ -6,12 +6,12 @@ from loader import dp
 
 @dp.message_handler(CommandHelp(), ChatTypeFilter([types.chat.ChatType.PRIVATE]))
 async def bot_help(message: types.Message):
-    text = ("Бот для обработки и отправки документов в назначенный чат\n\n"
+    text = ("Belgilangan chatga hujjatlarni qayta ishlash va yuborish uchun bot\n\n"
                 ""
-                "Список команд: ",
-                "/start - Начать диалог",
-                "/register - Регистрация",
-                "/list - Список юзеров",
-                "/help - Получить справку")
+                "Buyruqlar ro'yxati: ",
+                "/start - Muloqotni boshlash",
+                "/register - Ro'yxatdan o'tish",
+                "/list - Foydalanuvchilar ro'yxati",
+                "/help - Ma'lumot uchun")
     
     await message.answer("\n".join(text))

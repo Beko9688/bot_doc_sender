@@ -13,23 +13,23 @@ from aiogram.dispatcher.filters.builtin import ChatTypeFilter
 @dp.message_handler(Command('register'), ChatTypeFilter([chat.ChatType.PRIVATE]), state=None,)
 async def enter_test(message: types.Message):
     if len(await db.is_exist(message.chat.id)) == 0:
-        await message.answer('Выберите [<i>Регион</i>]', reply_markup=menu)
+        await message.answer('<i>[Hududni]</i> tanlang.', reply_markup=menu)
         await Test.Q1.set()
     else:
-        await message.answer('Вы уже занесены в базу.\nДля удаление и перезаписи нажмите /delete_myself')
+        await message.answer("Siz allaqachon ma'lumotlar bazasiga kiritilgansiz.\nO'chirish va qayta kiritish uchun /delete_myself tugmasini bosing.")
 
 
 @dp.message_handler(state=Test.Q1)
 async def answer_q1(message: types.Message, state: FSMContext):
     await state.update_data(answer1=message.text)
-    await message.answer('Введите: [<i>Имя/Фамилия</i>]')
+    await message.answer('<i>[Ism sharifngizni]</i> kiriting.')
     await Test.Q2.set()
 
 
 @dp.message_handler(state=Test.Q2)
 async def answer_q2(full_name: types.Message, state: FSMContext):
     await state.update_data(answer2=full_name.text)
-    await full_name.answer('Введите: [<i>Номер телефона</i>]')
+    await full_name.answer('<i>[Telefon raqamingizni]</i> kiriting.')
     await Test.Q3.set()
 
 
@@ -50,7 +50,7 @@ async def answer_q3(message: types.Message, state: FSMContext):
                       region=region,
                       username=username)
 
-    await message.answer(f'Вы добавлены в базу\nВ базе {await db.count_users()} юзеров.\nТеперь вам можно отправлять файлы.')
+    await message.answer(f"Ma'lumotlar bazasiga qo'shildingiz\nbazadagi foydalanuvchi soni {await db.count_users()} .\nEndi fayllarni yuborishingiz mumkin.")
 
     await state.reset_state()
     await state.finish()
@@ -59,12 +59,12 @@ async def answer_q3(message: types.Message, state: FSMContext):
 @dp.message_handler(Command('delete_myself'), state=None)
 async def delete_user(message: types.Message):
     await db.delete_user(message.chat.id)
-    await message.answer('Успешно удалено с базый\nДля перерегистрации /register.')
+    await message.answer("Bazadan muvaffaqiyatli olib tashlandi\nQayta ro'yxatdan o'tish uchun /register bosing.")
 
 
 @dp.message_handler(Command('list'), state=None)
 async def get_users_by_region(message: types.Message):
-    await message.answer('Выберите регион.', reply_markup=menu)
+    await message.answer('<b>[Hududni]</b> tanlang.', reply_markup=menu)
     await NewPost.L1.set()
 
 
@@ -82,14 +82,14 @@ async def after_choice_list(message: types.Message, state: FSMContext):
             number = dict(user)['number']
             text += f'Имя - {full_name}\nusername - @{username}\nНомер - {number}\n\n'
 
-        await message.answer(f'Список юзеров по региону <b>{region}</b>\n-----------------------\n' + text)
+        await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
     else:
-        await message.answer('Список пуст')
+        await message.answer("Tanlangan hudut ro'yxati bo'sh.")
 
     await state.finish()
 
 
-@dp.message_handler(Command('users_num'))
+@dp.message_handler(Command('users_num'), ChatTypeFilter([chat.ChatType.PRIVATE]))
 async def admin_setting(message: types.Message):
     if str(message.chat.id) in config.ADMINS:
         amount_users = await db.count_users()
@@ -101,7 +101,7 @@ async def admin_setting(message: types.Message):
 @dp.message_handler(content_types=ContentType.ANY)
 async def handle_other_message(message: Message):
     if not message.chat.id == -748618255:
-        await message.answer('Бот предназначан только для отправки файлов.\n/help')
+        await message.answer("Bot faqat fayllarni yuborish uchun mo'ljallangan.\nmalumot uchun /help")
     else:
         if message.text in config.REGIONS:
             region = message.text
@@ -116,6 +116,6 @@ async def handle_other_message(message: Message):
                     number = dict(user)['number']
                     text += f'Имя - {full_name}\nusername - @{username}\nНомер - {number}\n\n'
 
-                await message.answer(f'Список юзеров по региону <b>{region}</b>\n-----------------------\n' + text)
+                await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
             else:
-                await message.answer('Список пуст')
+                await message.answer("Tanlangan hudut ro'yxati bo'sh.")
