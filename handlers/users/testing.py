@@ -50,7 +50,7 @@ async def answer_q3(message: types.Message, state: FSMContext):
                       region=region,
                       username=username)
 
-    await message.answer(f"Ma'lumotlar bazasiga qo'shildingiz\nbazadagi foydalanuvchi soni {await db.count_users()} .\nEndi fayllarni yuborishingiz mumkin.")
+    await message.answer(f"Ma'lumotlar bazasiga qo'shildingiz.\nBazadagi foydalanuvchi soni {await db.count_users()} \nEndi fayllarni yuborishingiz mumkin.")
 
     await state.reset_state()
     await state.finish()
@@ -80,7 +80,7 @@ async def after_choice_list(message: types.Message, state: FSMContext):
             full_name = dict(user)['full_name']
             username = dict(user)['username']
             number = dict(user)['number']
-            text += f'Имя - {full_name}\nusername - @{username}\nНомер - {number}\n\n'
+            text += f'Ismi - {full_name}\nUsername - @{username}\nTel - {number}\n\n'
 
         await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
     else:
@@ -114,7 +114,7 @@ async def handle_other_message(message: Message):
                     full_name = dict(user)['full_name']
                     username = dict(user)['username']
                     number = dict(user)['number']
-                    text += f'Имя - {full_name}\nusername - @{username}\nНомер - {number}\n\n'
+                    text += f'Ismi - {full_name}\nusername - @{username}\nTel - {number}\n\n'
 
                 await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
             else:
