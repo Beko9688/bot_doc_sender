@@ -2,20 +2,28 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text='Qoraqalpogʻiston Respublikasi')],
-        [KeyboardButton(text='Andijon viloyati')],
-        [KeyboardButton(text='Buxoro viloyati')],
-        [KeyboardButton(text='Fargʻona viloyati')],
-        [KeyboardButton(text='Jizzax viloyati')],
-        [KeyboardButton(text='Namangan viloyati')],
-        [KeyboardButton(text='Navoiy viloyati')],
-        [KeyboardButton(text='Qashqadaryo viloyati')],
-        [KeyboardButton(text='Samarqand viloyati')],
-        [KeyboardButton(text='Sirdaryo viloyati')],
-        [KeyboardButton(text='Surxondaryo viloyati')],
-        [KeyboardButton(text='Xorazm viloyati')],
-        [KeyboardButton(text='Toshkent viloyati')],
-        [KeyboardButton(text='Toshkent shahar')],
+        [KeyboardButton(text='Урганч шаҳар')],
+        [KeyboardButton(text='Урганч туман')],
+        [KeyboardButton(text='Хива шаҳар')],
+        [KeyboardButton(text='Хива туман')],
+        [KeyboardButton(text='Хонка туман')],
+        [KeyboardButton(text='Қўшкупир туман')],
+        [KeyboardButton(text='Гурлан туман')],
+        [KeyboardButton(text='Боғот туман')],
+        [KeyboardButton(text='Ҳазорасп туман')],
+        [KeyboardButton(text='Шовот туман')],
+        [KeyboardButton(text='Янгибозор туман')],
+        [KeyboardButton(text='Янгиарик туман')],
+        [KeyboardButton(text='Питнак туман')],
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True
+)
+
+
+info = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text='/list@hujjat_sld_bot')],
     ],
     resize_keyboard=True,
     one_time_keyboard=True

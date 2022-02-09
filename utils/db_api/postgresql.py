@@ -22,10 +22,16 @@ class Database:
         user_id INT UNIQUE NOT NULL,
         full_name VARCHAR ( 150 ),
         number VARCHAR ( 50 ),
+        address VARCHAR (150),
+        job VARCHAR (150),
         region VARCHAR ( 50 ),
         username VARCHAR ( 50 ),
         PRIMARY KEY (user_id))
         """
+        await self.pool.execute(sql)
+
+    async def delete_table_users(self):
+        sql = """DROP TABLE users;"""
         await self.pool.execute(sql)
 
     @staticmethod
@@ -33,9 +39,9 @@ class Database:
         sql += " AND ".join([f"{item} = ${num}" for num, item in enumerate(parameters, start=1)])
         return sql, tuple(parameters.values())
 
-    async def add_user(self, user_id: int, username: str, full_name: str, region: str, number: str):
-        sql = "INSERT INTO users (user_id,username,full_name,region,number) VALUES ($1, $2, $3, $4, $5)"
-        await self.pool.execute(sql, user_id, username, full_name, region, number)
+    async def add_user(self, user_id: int, username: str, full_name: str, region: str, number: str, address: str, job: str):
+        sql = "INSERT INTO users (user_id,username,full_name,region,number,address,job) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+        await self.pool.execute(sql, user_id, username, full_name, region, number, address, job)
 
     async def select_all_users(self):
         sql = "SELECT * FROM users"

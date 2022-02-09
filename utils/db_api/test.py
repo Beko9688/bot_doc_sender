@@ -4,12 +4,19 @@ from utils.db_api.postgresql import Database
 
 async def test():
     await db.create_table_users()
-    # print('Adding user')
-    # await db.add_user(123, "hello", "world", "sword", "book")
-    # await db.add_user(12345, "Иван Иванов", "+7845225048", "Moscow Russia", "ivanov_777")
-    #
-    # print('done!')
-    #
+    print('Database has created successfully!')
+
+    # await db.delete_table_users()
+    # print('D E L E T E !')
+    # await db.create_table_users()
+    await db.add_user(user_id=12346,
+                      full_name="Иван Иванов",
+                      number="+7845225048",
+                      address='Baker Street',
+                      job = 'WallStreet',
+                      region="Moscow Russia",
+                      username="ivanov_777",)
+
     # users = await db.select_all_users()
     # print(f'all users : {list(users)}')
     #
@@ -18,7 +25,7 @@ async def test():
     #
     # print(f'count of users : {await db.count_users()}')
 
-    await db.delete_user(12345)
+    # await db.delete_user(12345)
     print(f'count of users : {await db.count_users()}')
 
 

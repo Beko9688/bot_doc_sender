@@ -5,7 +5,7 @@ from data import config
 from loader import dp, db
 from aiogram import types
 from states import Test, NewPost
-from keyboards.default import menu
+from keyboards.default import menu, info
 from aiogram.types import Message, ContentType, chat
 from aiogram.dispatcher.filters.builtin import ChatTypeFilter
 
@@ -34,12 +34,28 @@ async def answer_q2(full_name: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=Test.Q3)
+async def answer_q2(message: types.Message, state: FSMContext):
+    await state.update_data(answer3=message.text)
+    await message.answer("<i>[Yashash manzilingizni to'liq kiriting]</i> kiriting.")
+    await Test.Q4.set()
+
+
+@dp.message_handler(state=Test.Q4)
+async def answer_q2(message: types.Message, state: FSMContext):
+    await state.update_data(answer4=message.text)
+    await message.answer("<i>[O'qish yoki ish joyingizni kiriting]</i> kiriting.")
+    await Test.Q5.set()
+
+
+@dp.message_handler(state=Test.Q5)
 async def answer_q3(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
     region = data.get('answer1')
     full_name = data.get('answer2')
-    number = message.text
+    number = data.get('answer3')
+    address = data.get('answer4')
+    job = message.text
     user_id = message.chat.id
     username = message.chat.username
     # print(user_id, full_name, number, region, username)
@@ -47,10 +63,13 @@ async def answer_q3(message: types.Message, state: FSMContext):
     await db.add_user(user_id=user_id,
                       full_name=full_name,
                       number=number,
+                      address=address,
+                      job=job,
                       region=region,
                       username=username)
 
-    await message.answer(f"Ma'lumotlar bazasiga qo'shildingiz.\nBazadagi foydalanuvchi soni {await db.count_users()} \nEndi fayllarni yuborishingiz mumkin.")
+    # await message.answer(f"Ma'lumotlar bazasiga qo'shildingiz.\nBazadagi foydalanuvchi soni {await db.count_users()} \nEndi fayllarni yuborishingiz mumkin.")
+    await message.answer(f"Muvaffaqiyatli ro'yxatdan otdingiz.\nViloyat, Respublikasida miqyosida g'olib bo'lgan diplomlar (1, 2, 3 darajali) pdf faylda yuklashingiz mumkin.")
 
     await state.reset_state()
     await state.finish()
@@ -80,7 +99,9 @@ async def after_choice_list(message: types.Message, state: FSMContext):
             full_name = dict(user)['full_name']
             username = dict(user)['username']
             number = dict(user)['number']
-            text += f'Ismi - {full_name}\nUsername - @{username}\nTel - {number}\n\n'
+            address = dict(user)['address']
+            job = dict(user)['job']
+            text += f"Ismi - {full_name}\nUsername - @{username}\nTel - {number}\nAddress - {address}\nO'qish/ish joyi - {job}\n\n"
 
         await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
     else:
@@ -114,7 +135,9 @@ async def handle_other_message(message: Message):
                     full_name = dict(user)['full_name']
                     username = dict(user)['username']
                     number = dict(user)['number']
-                    text += f'Ismi - {full_name}\nusername - @{username}\nTel - {number}\n\n'
+                    address = dict(user)['address']
+                    job = dict(user)['job']
+                    text += f"Ismi - {full_name}\nUsername - @{username}\nTel - {number}\nAddress - {address}\nO'qish/ish joyi - {job}\n\n"
 
                 await message.answer(f"Hudud bo'yicha foydalanuvchilar ro'yxati <b>{region}</b>\n-----------------------\n" + text)
             else:
